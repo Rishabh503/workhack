@@ -9,7 +9,8 @@ const subjectSchema=new mongoose.Schema({
     },
     student:[{
       type:mongoose.Schema.Types.ObjectId,
-      ref:"Student"
+      ref:"Student",
+      required:true
     }],
     topics:[{
         type:mongoose.Schema.Types.ObjectId,
@@ -22,5 +23,5 @@ const subjectSchema=new mongoose.Schema({
    
 })
 
-const Subject=mongoose.model.Subject || mongoose.model("Subject",subjectSchema)
+const Subject=mongoose.models.Subject || mongoose.model("Subject",subjectSchema)
 export default Subject
