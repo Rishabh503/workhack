@@ -3,6 +3,7 @@ import "./globals.css";
 import Footer from "@/components/custom/Footer";
 import Navbar from "@/components/custom/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import SyncUser from "@/components/custom/SaveUser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
        <ClerkProvider>
+        <SyncUser/>
          <Navbar/>
         {children}
         <Footer/>
