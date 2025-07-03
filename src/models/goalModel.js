@@ -12,8 +12,8 @@ const goalSchema = new mongoose.Schema(
       required: true,
     },
     completionStatus: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: "pending",
     },
     title:{
         type:String,
@@ -21,8 +21,7 @@ const goalSchema = new mongoose.Schema(
     },
     sessions:[{
        type: mongoose.Schema.Types.ObjectId,
-      ref: "Session", 
-      required: true,
+      ref: "Session",
     }]
   },
   {

@@ -3,6 +3,8 @@ import React from 'react'
 import AddSubjectForm from './__components/AddSubjectForm'
 import { DialogDemo } from './__components/DialogBasedForm'
 
+import Display from './__components/Display'
+
 const SubjectPage = () => {
   return (
     <>
@@ -12,6 +14,10 @@ const SubjectPage = () => {
                     Subjects
                 </p>
               <DialogDemo/>
+            </div>
+            <div>
+           
+              <Display/>
             </div>
         </section>
     </>

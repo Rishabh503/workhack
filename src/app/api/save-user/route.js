@@ -23,6 +23,7 @@ export async function GET() {
 
         return Response.json({ student: newStudent, status: "created" });
     }
+    // console.log(existingStudent)
    return Response.json({ student: existingStudent, status: "existing" });
     } catch (error) {
         console.error("error saving the user ",error)

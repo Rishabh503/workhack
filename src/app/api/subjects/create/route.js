@@ -6,6 +6,7 @@ import { currentUser } from "@clerk/nextjs/server";
 export async function POST(req) {
   try {
     await connectDB();
+    
     const clerkUser = await currentUser();
     if (!clerkUser) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
@@ -61,3 +62,5 @@ export async function POST(req) {
     return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
   }
 }
+
+
