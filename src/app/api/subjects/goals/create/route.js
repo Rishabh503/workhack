@@ -16,13 +16,15 @@ try {
     if (!clerkUser) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
-   const thisStudent = await Student.findOne({ clerkId: clerkUser.id }).populate("subjects")
+   const thisStudent = await Student.findOne({ clerkId: clerkUser.id }).populate("subjects").populate("goals")
    console.log("thisStudent",thisStudent)
    const thisSubject=await Subject.findOne({name:subject})
-   const goal={subject:thisSubject._id,title,deadline};
+   const goal={subject:thisSubject._id,title,deadline,student:thisStudent._id};
    const createGoal=await Goal.create(goal);
 thisSubject.goals.push(createGoal);
+thisStudent.goals.push(createGoal)
 await thisSubject.save()
+await thisStudent.save()
   return new Response(
       JSON.stringify({ goal: createGoal, status: "created-new" }),
       { status: 201 }

@@ -17,8 +17,11 @@ const studentSchema=new mongoose.Schema({
     subjects:[{
       type:mongoose.Schema.Types.ObjectId,
       ref:"Subject"
+    }],
+    goals:[{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Goal"
     }]
-   
 })
 
 const Student=mongoose.models.Student || mongoose.model("Student",studentSchema)
