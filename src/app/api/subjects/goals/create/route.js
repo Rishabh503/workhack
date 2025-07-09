@@ -40,3 +40,45 @@ await thisStudent.save()
     return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
 }
 }
+
+export async function PATCH(req) {
+  try {
+    await connectDB();
+
+    const body = await req.json();
+    const { goalId, title, deadline, description } = body;
+
+    if (!goalId) {
+      return new Response(JSON.stringify({ error: "Missing goalId" }), {
+        status: 400,
+      });
+    }
+
+    // Find and update the goal
+    const updatedGoal = await Goal.findByIdAndUpdate(
+      goalId,
+      {
+        ...(title && { title }),
+        ...(deadline && { deadline }),
+        ...(description && { description }),
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedGoal) {
+      return new Response(JSON.stringify({ error: "Goal not found" }), {
+        status: 404,
+      });
+    }
+
+    return new Response(JSON.stringify({ goal: updatedGoal }), {
+      status: 200,
+    });
+
+  } catch (error) {
+    console.error("Error while updating goal:", error);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+    });
+  }
+}

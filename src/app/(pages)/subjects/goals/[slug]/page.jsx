@@ -10,32 +10,42 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from 'react';
-import { DialogGoal } from '../../__components/DialogBasedGoal';
+import { use, useState } from 'react';
+
 import Link from 'next/link';
+import UpdateGoalForm from '../__components/UpdateGoalForm';
+import DeleteGoalForm from '../__components/DeleteGoalForm';
+
 
 export default function GoalsviewPage({ params }) {
   const { user, loading } = useUser();
-  
-  if (loading) return <p>Loading...</p>;
+    const { slug } = use(params); 
+  console.log(slug)
+  if (loading) return <p>Loading Goals...</p>;
   console.log(user)
-  const goals=user.student.goals || []
-  console.log(goals)
+  const goals=user.student.goals.filter((goal)=>goal.subject==slug) || []
+ const subjName=user.student.subjects.filter((s)=>s._id==slug)[0].name || "Loading"
 
-
+ console.log(subjName)
   return (
     <>
       <div>
-   
-      <p>Welcome, {user.name}</p>
+      <p className='flex items-end  justify-between'>
+      Goals <span className='font-semibold text-2xl px-6 text-gray-300'>
+        {subjName}
+        </span>  
+      </p>
+      
       </div>
       <div>
          <Table>
-        <TableCaption>All Your Subjects.</TableCaption>
+        <TableCaption>All Your  {subjName} Goals.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="text-white">Title</TableHead>
-            <TableHead className="text-white">Action</TableHead>
+            <TableHead className="text-white">Description</TableHead>
+            <TableHead className="text-white">Deadline</TableHead>
+            <TableHead className="text-white">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,7 +61,20 @@ export default function GoalsviewPage({ params }) {
                {goal.description}
                 </TableCell>
                 <TableCell>
-                    
+                    {goal.deadline}
+                </TableCell>
+                <TableCell>
+                    {goal.completionStatus}
+                </TableCell>
+                <TableCell >
+                  {/* update button  */}
+                  <UpdateGoalForm goal={goal}/>
+                
+                  <Button className='bg-green-200 hover:bg-green-400 px-4 text-black'>
+                    Change Status
+                  </Button>
+                  {/* delete button  */}
+                <DeleteGoalForm  goal={goal}/>
                 </TableCell>
               </TableRow>
             ))

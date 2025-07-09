@@ -61,7 +61,7 @@ const Display = () => {
                
                 </TableCell>
                 <TableCell>
-                    <Button>
+                    <Button className='bg-fuchsia-400 hover:bg-fuchsia-500'>
                        <Link href={`/subjects/goals/${subject._id}`}>
                         View All Goals 
                        </Link>

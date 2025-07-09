@@ -26,6 +26,7 @@ export async function GET() {
     // console.log(existingStudent)
    return Response.json({ student: existingStudent, status: "existing" });
     } catch (error) {
+        console.log(error)
         console.error("error saving the user ",error)
     }
 }

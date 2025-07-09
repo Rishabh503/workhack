@@ -14,32 +14,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 // subject deadline title 
-export function DialogGoal({subjectName}) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [deadline, setDeadline] = useState("");
+export default function UpdateGoalForm({goal}) {
+const [title, setTitle] = useState(goal?.title || "");
+const [description, setDescription] = useState(goal?.description || "");
+const [deadline, setDeadline] = useState(goal?.deadline?.slice(0,10) || "");
   const [loading, setLoading] = useState(false);
   const [responseMsg, setResponseMsg] = useState("");
-
+  console.log(goal)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResponseMsg("");
     setDescription("");
-console.log("checking props",subjectName)
+
     try {
-      const res = await fetch("/api/subjects/goals/create", {
-        method: "POST",
+      const res = await fetch(`/api/subjects/goals/create/${goal._id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject: subjectName  , title,deadline,description }),
+        body: JSON.stringify({  title,deadline,description }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        setResponseMsg(`✅ Goal  added successfully!`);
+        setResponseMsg(`✅ Goal  updated successfully!`);
       } else {
         setResponseMsg(`❌ ${data.error}`);
       }
@@ -55,14 +55,14 @@ console.log("checking props",subjectName)
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-amber-300 hover:bg-amber-400" variant="outline">
-          Add New Goal
-        </Button>
+         <Button className='bg-blue-200 hover:bg-blue-400 text-black mx-2 '>
+                    Edit
+          </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle className="text-3xl">Add Goal </DialogTitle>
+            <DialogTitle className="text-3xl">Edit Goal </DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
