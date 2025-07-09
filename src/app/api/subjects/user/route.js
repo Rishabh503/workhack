@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import Student from "@/models/studentModel";
 import { currentUser } from "@clerk/nextjs/server";
 import Subject from "@/models/subjectModel";
+import Goal from "@/models/goalModel";
 
 
 export async function GET(){
@@ -14,7 +15,11 @@ export async function GET(){
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    const thisStudent = await Student.findOne({ clerkId: clerkUser.id }).populate("subjects");
+    const thisStudent = await Student.findOne({ clerkId: clerkUser.id })
+  .populate("goals")
+  .populate("subjects")
+
+
     return Response.json({ student: thisStudent, status: "existing" });
     } catch (error) {
         console.error("Error while getting data:", error);

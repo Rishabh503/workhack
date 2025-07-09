@@ -23,6 +23,10 @@ const goalSchema = new mongoose.Schema(
         type:String,
         required:true
     },
+    description:{
+      type:String,
+      required:true,
+    },
     sessions:[{
        type: mongoose.Schema.Types.ObjectId,
       ref: "Session",

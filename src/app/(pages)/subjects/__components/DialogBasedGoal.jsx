@@ -16,6 +16,7 @@ import { useState } from "react";
 // subject deadline title 
 export function DialogGoal({subjectName}) {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [loading, setLoading] = useState(false);
   const [responseMsg, setResponseMsg] = useState("");
@@ -31,7 +32,7 @@ console.log("checking props",subjectName)
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject: subjectName  , title,deadline }),
+        body: JSON.stringify({ subject: subjectName  , title,deadline,description }),
       });
 
       const data = await res.json();
@@ -72,6 +73,17 @@ console.log("checking props",subjectName)
                 placeholder="e.g. Math, Physics"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="subject">Description</Label>
+              <Input
+                id="description"
+                name="description"
+                placeholder="add the decription"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 required
               />
             </div>

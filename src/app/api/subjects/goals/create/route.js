@@ -10,7 +10,8 @@ export  async function POST(req){
 try {
     await connectDB();
     const reqBody=await req.json();
-    const {subject,title,deadline}=reqBody;
+    const {subject,title,deadline,description}=reqBody;
+    console.log("request body",reqBody)
   
     const clerkUser = await currentUser();
     if (!clerkUser) {
@@ -19,8 +20,13 @@ try {
    const thisStudent = await Student.findOne({ clerkId: clerkUser.id }).populate("subjects").populate("goals")
    console.log("thisStudent",thisStudent)
    const thisSubject=await Subject.findOne({name:subject})
-   const goal={subject:thisSubject._id,title,deadline,student:thisStudent._id};
+   const goal={subject:thisSubject._id,
+    title,
+    deadline,
+    student:thisStudent._id,
+    description};
    const createGoal=await Goal.create(goal);
+   console.log("naya goal" ,createGoal)
 thisSubject.goals.push(createGoal);
 thisStudent.goals.push(createGoal)
 await thisSubject.save()

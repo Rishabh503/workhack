@@ -4,6 +4,7 @@ import Footer from "@/components/custom/Footer";
 import Navbar from "@/components/custom/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import SyncUser from "@/components/custom/SaveUser";
+import { UserProvider } from "@/context/UserContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,12 +27,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+            <UserProvider>
        <ClerkProvider>
         <SyncUser/>
          <Navbar/>
         {children}
         <Footer/>
        </ClerkProvider>
+       </UserProvider>
 
       </body>
     </html>

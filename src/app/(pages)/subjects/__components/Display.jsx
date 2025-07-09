@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DialogGoal } from "./DialogBasedGoal";
+import Link from "next/link";
 
 const Display = () => {
   const [subjects, setSubjects] = useState([]);
@@ -61,7 +62,9 @@ const Display = () => {
                 </TableCell>
                 <TableCell>
                     <Button>
+                       <Link href={`/subjects/goals/${subject._id}`}>
                         View All Goals 
+                       </Link>
                     </Button>
                 </TableCell>
               </TableRow>
