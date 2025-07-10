@@ -45,7 +45,9 @@ export default function GoalsviewPage({ params }) {
             <TableHead className="text-white">Title</TableHead>
             <TableHead className="text-white">Description</TableHead>
             <TableHead className="text-white">Deadline</TableHead>
-            <TableHead className="text-white">Actions</TableHead>
+            <TableHead className="text-white">Status</TableHead>
+            <TableHead className="text-white text-center ">Actions</TableHead>
+        
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -66,7 +68,7 @@ export default function GoalsviewPage({ params }) {
                 <TableCell>
                     {goal.completionStatus}
                 </TableCell>
-                <TableCell >
+                <TableCell className='flex justify-between items-center' >
                   {/* update button  */}
                   <UpdateGoalForm goal={goal}/>
                 

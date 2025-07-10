@@ -3,10 +3,14 @@ import mongoose from 'mongoose';
 
 const sessionSchema = new mongoose.Schema(
   {
+    student:{
+       type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student',
+      required:true
+    },
     goal: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Goal',
-      required: true,
     },
     date: {
       type: Date,
@@ -20,14 +24,10 @@ const sessionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    status: {
-      type: String, // "Pending", "Done", etc.
-      default: "Pending",
-    },
   },
   {
     timestamps: true,
   }
 );
-
-export default mongoose.models.Session || mongoose.model('Session', sessionSchema);
+const Session=mongoose.models.Session || mongoose.model('Session', sessionSchema);
+export default Session

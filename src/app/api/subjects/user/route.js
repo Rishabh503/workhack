@@ -3,6 +3,7 @@ import Student from "@/models/studentModel";
 import { currentUser } from "@clerk/nextjs/server";
 import Subject from "@/models/subjectModel";
 import Goal from "@/models/goalModel";
+import Session from "@/models/sessionModel";
 
 
 export async function GET(){
@@ -18,6 +19,7 @@ export async function GET(){
     const thisStudent = await Student.findOne({ clerkId: clerkUser.id })
   .populate("goals")
   .populate("subjects")
+  .populate("sessions")
 
 
     return Response.json({ student: thisStudent, status: "existing" });
