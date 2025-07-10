@@ -1,50 +1,57 @@
 'use client';
-import { useUser } from '@/context/UserContext';
 import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
-import { use, useState } from 'react';
+import { useUser } from '@/context/UserContext';
+import DeleteGoalForm from '../../subjects/goals/__components/DeleteGoalForm';
+import UpdateGoalForm from '../../subjects/goals/__components/UpdateGoalForm';
+import { DialogGoal } from "./DialogBasedGoal";
+import { UpdateStatus } from "./UpdateStatus";
 
-import Link from 'next/link';
-import UpdateGoalForm from '../__components/UpdateGoalForm';
-import DeleteGoalForm from '../__components/DeleteGoalForm';
-import { UpdateStatus } from '@/app/(pages)/goal/__components/UpdateStatus';
 
 
-export default function GoalsviewPage({ params }) {
+
+export default function DisplayTable() {
   const { user, loading } = useUser();
-    const { slug } = use(params); 
-  console.log(slug)
+   console.log("user hu me ",user)
   if (loading) return <p>Loading Goals...</p>;
   console.log(user)
-  const goals=user.student.goals.filter((goal)=>goal.subject==slug) || []
- const subjName=user.student.subjects.filter((s)=>s._id==slug)[0].name || "Loading"
+  const goals=user.student.goals || []
+  console.log("all goals",goals)
+    const subjects=user.student.subjects  || []
+    console.log(subjects)
 
- console.log(subjName)
+   function subjName(subjId){
+       const name= subjects.filter((sub)=>sub._id==subjId)
+       console.log(name)
+       return name[0].name
+   }
+
   return (
     <>
       <div>
-      <p className='flex items-end  justify-between'>
-      Goals <span className='font-semibold text-2xl px-6 text-gray-300'>
-        {subjName}
+      <p className='flex items-end text-2xl font-semibold text-gray-400  justify-between'>
+      All Goals <span className='font-semibold text-2xl px-6 text-gray-300'>
+        <DialogGoal/>
         </span>  
       </p>
       
       </div>
       <div>
          <Table>
-        <TableCaption>All Your  {subjName} Goals.</TableCaption>
+        <TableCaption>All Your  Goals.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="text-white">Title</TableHead>
             <TableHead className="text-white">Description</TableHead>
+            <TableHead className="text-white">Subject</TableHead>
             <TableHead className="text-white">Deadline</TableHead>
             <TableHead className="text-white">Status</TableHead>
             <TableHead className="text-white text-center ">Actions</TableHead>
@@ -64,7 +71,10 @@ export default function GoalsviewPage({ params }) {
                {goal.description}
                 </TableCell>
                 <TableCell>
-                    {goal.deadline}
+               {subjName(goal.subject)}
+                </TableCell>
+                <TableCell>
+                    {new Date(goal.deadline).toISOString().split("T")[0]}
                 </TableCell>
                 <TableCell>
                     {goal.completionStatus}
@@ -72,7 +82,9 @@ export default function GoalsviewPage({ params }) {
                 <TableCell className='flex justify-between items-center' >
                   {/* update button  */}
                   <UpdateGoalForm goal={goal}/>
-                <UpdateStatus goal={goal}/>
+                
+                  <UpdateStatus goal={goal} />
+                
                   {/* delete button  */}
                 <DeleteGoalForm  goal={goal}/>
                 </TableCell>

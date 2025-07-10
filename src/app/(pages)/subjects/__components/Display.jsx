@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/table";
 import { DialogGoal } from "./DialogBasedGoal";
 import Link from "next/link";
+import { UpdateStatus } from "../../goal/__components/UpdateStatus";
+import UpdateSubject from "./SubjectUpdate";
 
 const Display = () => {
   const [subjects, setSubjects] = useState([]);
@@ -66,6 +68,9 @@ const Display = () => {
                         View All Goals 
                        </Link>
                     </Button>
+                </TableCell>
+                <TableCell>
+                    <UpdateSubject subject={subject}/>
                 </TableCell>
               </TableRow>
             ))

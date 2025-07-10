@@ -22,16 +22,20 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="bg-white rounded-lg p-1">
+           <Link href='/'>
             <Image src={logo} alt="logo" width={40} height={40} />
+           </Link>
           </div>
+          <Link href='/'>
           <h1 className="text-2xl font-bold tracking-tight">StudyFlow</h1>
+          </Link>
         </div>
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-6">
           <Link href="/subjects" className="hover:text-blue-400 transition">Subject</Link>
           <Link href="/" className="hover:text-blue-400 transition">Dashboard</Link>
-          <Link href="/" className="hover:text-blue-400 transition">Goals</Link>
+          <Link href="/goal" className="hover:text-blue-400 transition">Goals</Link>
           <Link href="/" className="hover:text-blue-400 transition">Tracker</Link>
           <Link href="/sessions" className="hover:text-blue-400 transition">Sessions</Link>
           <Link href="/" className="hover:text-blue-400 transition">Mitr</Link>
