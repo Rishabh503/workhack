@@ -26,7 +26,7 @@ const Navbar = () => {
             <Image src={logo} alt="logo" width={40} height={40} />
            </Link>
           </div>
-         <Link href="/" className="text-2xl font-extrabold tracking-tight">
+         <Link href="https://edunite-chi.vercel.app/" className="text-2xl font-extrabold tracking-tight">
           <span className="text-white">Edu</span>
           <span className="text-blue-500/80">niteX</span>
         </Link>
