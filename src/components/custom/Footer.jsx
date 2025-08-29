@@ -1,39 +1,125 @@
 import { Github, Twitter, Linkedin } from "lucide-react";
+import Link from "next/link";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0f172a] text-white px-6 py-12">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8">
-        {/* Left - Brand Info */}
+    <footer className="bg-[#0f172a] text-white ">
+      <hr />
+      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Brand Info */}
         <div>
-          <h2 className="text-2xl font-bold">StudyFlow</h2>
-          <p className="text-gray-400 mt-2 max-w-xs">
-            Empowering students to stay organized, motivated, and ahead with AI-driven progress tracking.
+          <h5 className="text-xl font-bold mb-2">
+            Edu<span className="text-blue-500/80">Assist</span>
+          </h5>
+          <p className="text-sm">
+            AI-powered teacher assistant that automates grading and provides
+            personalized feedback to support educators and enhance student
+            learning.
           </p>
-        </div>
-
-        {/* Center - Navigation */}
-        <div className="flex flex-col gap-2">
-          <h3 className="font-semibold text-lg mb-1">Quick Links</h3>
-          <a href="#" className="text-gray-400 hover:text-white">Home</a>
-          <a href="#" className="text-gray-400 hover:text-white">Features</a>
-          <a href="#" className="text-gray-400 hover:text-white">Dashboard</a>
-          <a href="#" className="text-gray-400 hover:text-white">Get Started</a>
-        </div>
-
-        {/* Right - Socials */}
-        <div>
-          <h3 className="font-semibold text-lg mb-2">Connect with Us</h3>
-          <div className="flex gap-4">
-            <a href="#" aria-label="GitHub"><Github className="text-gray-400 hover:text-white" /></a>
-            <a href="#" aria-label="LinkedIn"><Linkedin className="text-gray-400 hover:text-white" /></a>
-            <a href="#" aria-label="Twitter"><Twitter className="text-gray-400 hover:text-white" /></a>
+          <div className="flex gap-3 mt-4">
+            <a href="#" className="hover:text-yellow-300">
+              <FaFacebookF />
+            </a>
+            <a href="#" className="hover:text-yellow-300">
+              <FaTwitter />
+            </a>
+            <a href="#" className="hover:text-yellow-300">
+              <FaInstagram />
+            </a>
+            <a href="#" className="hover:text-yellow-300">
+              <FaLinkedinIn />
+            </a>
           </div>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h5 className="text-lg font-semibold mb-2">Quick Links</h5>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/" className="hover:text-yellow-300">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="hover:text-yellow-300">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-yellow-300">
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link href="/grading" className="hover:text-yellow-300">
+                Auto Grading
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Features */}
+        <div>
+          <h5 className="text-lg font-semibold mb-2">Features</h5>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <a href="#" className="hover:text-yellow-300">
+                Assignment Grading
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-yellow-300">
+                Student Feedback
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-yellow-300">
+                Analytics Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-yellow-300">
+                Rubric Builder
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Newsletter */}
+        <div>
+          <h5 className="text-lg font-semibold mb-2">Educator Newsletter</h5>
+          <p className="text-sm">
+            Subscribe for teaching tips, product updates, and education
+            research.
+          </p>
+          <form className="mt-4">
+            <div className="flex">
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="px-3 py-2 w-full rounded-l bg-white text-black text-sm outline-none"
+              />
+              <button
+                type="submit"
+                className="bg-blue-500/80 text-white px-4 py-2 text-sm font-semibold rounded-r hover:bg-yellow-400"
+              >
+                Subscribe
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 
-      <div className="text-center text-gray-500 mt-10 text-sm border-t border-gray-700 pt-4">
-        © {new Date().getFullYear()} StudyFlow. All rights reserved.
+      <div className="text-center py-4 border-t border-purple-700 text-sm">
+        © 2025 EduniteX. All Rights Reserved. Supporting Quality Education
+        Worldwide.
       </div>
     </footer>
   );

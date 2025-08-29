@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useRef, useState } from "react";
 import { Play, Pause, RotateCcw, Save } from "lucide-react";
+import { useUser } from "@/context/UserContext";
 
 export function MyClock() {
   const [seconds, setSeconds] = useState(0);
@@ -39,7 +40,7 @@ export function MyClock() {
     setRunning(false);
     setStartTimeReal(null);
   };
-
+const {userEmail}=useUser()
   const handleSave = async () => {
     const now = new Date();
 
@@ -47,6 +48,7 @@ export function MyClock() {
       date: now.toISOString().split("T")[0],
       startTime: startTimeReal?.toLocaleTimeString() || "00:00:00",
       endTime: now.toLocaleTimeString(),
+      email:userEmail
     };
 
     try {

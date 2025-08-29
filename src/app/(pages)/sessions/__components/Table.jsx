@@ -13,8 +13,10 @@ import {
 } from "@/components/ui/table";
 // import { DialogGoal } from "./DialogBasedGoal";
 import Link from "next/link";
+import { useUser } from "@/context/UserContext";
 
 const TableDisplay = () => {
+  const {userEmail}=useUser()
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -50,24 +52,29 @@ function getTimeDifference(start, end) {
 
 
 
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const res = await fetch("/api/subjects/user", {
-          credentials: "include", //
-        });
-        const data = await res.json();
-        console.log(data.student.sessions);
-        setSessions(data.student.sessions || []);
-      } catch (err) {
-        console.error("Error fetching subjects:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchSubjects = async () => {
+    try {
+      if (!userEmail) return; // avoid calling with null
 
-    fetchSubjects();
-  }, []);
+      const res = await fetch(`/api/subjects/user?email=${encodeURIComponent(userEmail)}`, {
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      console.log("Fetched subjects:", data);
+
+      setSessions(data.student?.sessions || []);
+    } catch (err) {
+      console.error("Error fetching subjects:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSubjects();
+}, [userEmail]); // rerun when userEmail is set
+
 
   return (
     <div>

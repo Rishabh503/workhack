@@ -26,9 +26,11 @@ const Navbar = () => {
             <Image src={logo} alt="logo" width={40} height={40} />
            </Link>
           </div>
-          <Link href='/'>
-          <h1 className="text-2xl font-bold tracking-tight">StudyFlow</h1>
-          </Link>
+         <Link href="/" className="text-2xl font-extrabold tracking-tight">
+          <span className="text-white">Edu</span>
+          <span className="text-blue-500/80">niteX</span>
+        </Link>
+
         </div>
 
         {/* Desktop Links */}
@@ -38,7 +40,7 @@ const Navbar = () => {
           <Link href="/goal" className="hover:text-blue-400 transition">Goals</Link>
 
           <Link href="/sessions" className="hover:text-blue-400 transition">Sessions</Link>
-          <Link href="/" className="hover:text-blue-400 transition">Mitr</Link>
+          <Link href="/mitar" className="hover:text-blue-400 transition">Mitr</Link>
         </div>
 
         {/* Auth Buttons */}
