@@ -36,7 +36,7 @@ const Navbar = () => {
           <Link href="/subjects" className="hover:text-blue-400 transition">Subject</Link>
           <Link href="/dashboard" className="hover:text-blue-400 transition">Dashboard</Link>
           <Link href="/goal" className="hover:text-blue-400 transition">Goals</Link>
-          <Link href="/" className="hover:text-blue-400 transition">Tracker</Link>
+
           <Link href="/sessions" className="hover:text-blue-400 transition">Sessions</Link>
           <Link href="/" className="hover:text-blue-400 transition">Mitr</Link>
         </div>

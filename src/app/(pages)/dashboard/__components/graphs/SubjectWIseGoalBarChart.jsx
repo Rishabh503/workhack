@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useUser } from "@/context/UserContext";
 
 const data = [
   { subject: "Maths", COMPLETED: 1, "HALF DONE": 2, "ALMOST DONE": 2 },
@@ -29,6 +30,8 @@ const COLORS = {
 };
 
 const SubjectWiseGoalBarChart = () => {
+    const {user}=useUser();
+console.log("me user h",user)
   return (
     <Card className="w-full bg-gray-800 max-w-5xl mx-auto p-4">
       <CardHeader>
