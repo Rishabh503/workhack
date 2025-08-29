@@ -22,7 +22,6 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 
-// subject deadline title 
 export function DialogGoal() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -30,10 +29,11 @@ export function DialogGoal() {
   const [deadline, setDeadline] = useState("");
   const [loading, setLoading] = useState(false);
   const [responseMsg, setResponseMsg] = useState("");
-const {user}=useUser()
 
-const subjects=user.student.subjects.map((s)=>s.name)
-console.log("subjbsjbsj",subjects)
+  const { user, userEmail } = useUser(); // Get userEmail from context
+  console.log(user,userEmail)
+  const subjects = user?.student?.subjects?.map((s) => s.name) || [];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -45,13 +45,20 @@ console.log("subjbsjbsj",subjects)
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject, title, deadline, description }),
+        body: JSON.stringify({ 
+          subject, 
+          title, 
+          deadline, 
+          description,
+          email: userEmail // Add email parameter
+        }),
       });
 
       const data = await res.json();
-
       if (res.ok) {
         setResponseMsg(`✅ Goal added successfully!`);
+        // Refresh user data
+        window.location.reload(); // Or use refetchUser() if available
       } else {
         setResponseMsg(`❌ ${data.error}`);
       }
@@ -60,7 +67,7 @@ console.log("subjbsjbsj",subjects)
     }
 
     setLoading(false);
-    setTitle(""); 
+    setTitle("");
     setDeadline("");
     setDescription("");
     setSubject("");
@@ -78,7 +85,6 @@ console.log("subjbsjbsj",subjects)
           <DialogHeader>
             <DialogTitle className="text-3xl">Add Goal</DialogTitle>
           </DialogHeader>
-
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="subject">Subject</Label>
@@ -86,17 +92,13 @@ console.log("subjbsjbsj",subjects)
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select subject" />
                 </SelectTrigger>
-                
                 <SelectContent>
-                  {subjects.map((s)=>(
-                  <SelectItem value={s}>{s}</SelectItem>
-
-                ))}
-                  </SelectContent>
-
+                  {subjects.map((s, index) => (
+                    <SelectItem key={index} value={s}>{s}</SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </div>
-
             <div className="grid gap-2">
               <Label htmlFor="title">Title</Label>
               <Input
@@ -108,7 +110,6 @@ console.log("subjbsjbsj",subjects)
                 required
               />
             </div>
-
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
               <Input
@@ -120,7 +121,6 @@ console.log("subjbsjbsj",subjects)
                 required
               />
             </div>
-
             <div className="grid gap-2">
               <Label htmlFor="deadline">Deadline</Label>
               <Input
@@ -132,12 +132,10 @@ console.log("subjbsjbsj",subjects)
                 required
               />
             </div>
-
             {responseMsg && (
               <p className="text-sm text-center text-gray-300">{responseMsg}</p>
             )}
           </div>
-
           <DialogFooter className="mt-4">
             <DialogClose asChild>
               <Button variant="outline" type="button">

@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUser } from "@/context/UserContext";
+// import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 // subject deadline title 
 export function DialogGoal({subjectName}) {
@@ -20,20 +22,23 @@ export function DialogGoal({subjectName}) {
   const [deadline, setDeadline] = useState("");
   const [loading, setLoading] = useState(false);
   const [responseMsg, setResponseMsg] = useState("");
-
+    const { userEmail } = useUser()
+console.log("emaol h ye",userEmail)
+   
   const handleSubmit = async (e) => {
+//  console.log(email)
     e.preventDefault();
     setLoading(true);
     setResponseMsg("");
     setDescription("");
-console.log("checking props",subjectName)
+console.log("checking props",subjectName,userEmail)
     try {
       const res = await fetch("/api/subjects/goals/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject: subjectName  , title,deadline,description }),
+        body: JSON.stringify({ subject: subjectName  , title,deadline,description , email:userEmail }),
       });
 
       const data = await res.json();

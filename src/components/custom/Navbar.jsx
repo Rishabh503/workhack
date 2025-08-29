@@ -42,7 +42,7 @@ const Navbar = () => {
         </div>
 
         {/* Auth Buttons */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* <div className="hidden md:flex items-center gap-4">
           <SignedOut>
             <SignInButton>
               <button className="px-4 py-2 rounded-full border border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white transition text-sm">
@@ -58,7 +58,7 @@ const Navbar = () => {
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
-        </div>
+        </div> */}
 
         {/* Hamburger Menu Icon */}
         <div className="md:hidden">

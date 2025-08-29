@@ -1,42 +1,86 @@
-"use client";
-
 import React from "react";
-import { Card, CardTitle } from "@/components/ui/card";
 
-// Utility to convert hh:mm:ss to total seconds
-const timeToSeconds = (timeStr) => {
-  const [h, m, s] = timeStr.split(":").map(Number);
-  return h * 3600 + m * 60 + s;
-};
+const AverageSessionTimeCard = ({
+  averageTime = 0,     // in minutes
+  totalSessions = 0,
+  goalMinutes = 120,   // default: 2h
+}) => {
+  if (!averageTime || averageTime === 0) {
+    return (
+      <div className="text-center h-full flex flex-col justify-center p-4">
+        <h3 className="text-lg font-semibold mb-2 text-white">
+          Average Session Time
+        </h3>
+        <div className="text-2xl font-bold text-gray-400">No data</div>
+        <div className="text-sm text-gray-500 mt-1">
+          Start logging sessions
+        </div>
 
-// Convert seconds to mm:ss
-const formatMinutes = (seconds) => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}m ${secs}s`;
-};
+        {/* Show empty progress bar */}
+        <div className="mt-4 w-full bg-gray-700 rounded-full h-2">
+          <div className="bg-gray-500 h-2 rounded-full w-0"></div>
+        </div>
+      </div>
+    );
+  }
 
-const AverageSessionTimeCard = () => {
-    const sessions = [
-  { startTime: "4:49:26 PM", endTime: "4:50:47 PM" },
-  { startTime: "9:25:42 PM", endTime: "9:32:42 PM" },
-  { startTime: "4:49:26 PM", endTime: "4:51:58 PM" },
-];
-  if (!sessions || sessions.length === 0) return null;
+  const hours = Math.floor(averageTime / 60);
+  const minutes = averageTime % 60;
 
-  const totalSeconds = sessions.reduce((acc, session) => {
-    const start = timeToSeconds(session.startTime);
-    const end = timeToSeconds(session.endTime);
-    return acc + (end - start);
-  }, 0);
+  // Session quality mapping
+  const getSessionQuality = (avgTime) => {
+    if (avgTime >= 90) return { text: "Excellent", color: "text-green-400", icon: "🏆" };
+    if (avgTime >= 60) return { text: "Great", color: "text-blue-400", icon: "⭐" };
+    if (avgTime >= 30) return { text: "Good", color: "text-yellow-400", icon: "👍" };
+    if (avgTime >= 15) return { text: "Fair", color: "text-orange-400", icon: "⚡" };
+    return { text: "Short", color: "text-red-400", icon: "⏱️" };
+  };
 
-  const avgSeconds = Math.floor(totalSeconds / sessions.length);
+  const quality = getSessionQuality(averageTime);
+  const progress = Math.min((averageTime / goalMinutes) * 100, 100);
 
   return (
-    <Card className="p-4 rounded-xl shadow-sm bg-indigo-500 text-white">
-      <CardTitle className="text-sm mb-1">Avg. Session Time</CardTitle>
-      <div className="text-3xl font-bold">{formatMinutes(avgSeconds)}</div>
-    </Card>
+    <div className="text-center h-full flex flex-col justify-center p-4">
+      <h3 className="text-lg font-semibold mb-4 text-white">
+        Average Session Time
+      </h3>
+
+      {/* Duration */}
+      <div className="mb-4">
+        <div className="text-4xl font-bold text-blue-400 mb-2">
+          {hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`}
+        </div>
+        <div className="text-sm text-gray-400">per study session</div>
+      </div>
+
+      {/* Quality */}
+      <div className="mb-4">
+        <div className="text-2xl mb-1" aria-label={quality.text}>
+          {quality.icon}
+        </div>
+        <div className={`text-sm font-medium ${quality.color}`}>
+          {quality.text} Duration
+        </div>
+      </div>
+
+      {/* Session count */}
+      <div className="text-xs text-gray-500 border-t border-gray-700 pt-3">
+        Based on {totalSessions} session{totalSessions !== 1 ? "s" : ""}
+      </div>
+
+      {/* Progress bar */}
+      <div className="mt-4">
+        <div className="w-full bg-gray-700 rounded-full h-2">
+          <div
+            className="bg-gradient-to-r from-blue-600 to-blue-400 h-2 rounded-full transition-all duration-500"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="text-xs text-gray-500 mt-1">
+          Goal: {Math.floor(goalMinutes / 60)}h sessions
+        </div>
+      </div>
+    </div>
   );
 };
 

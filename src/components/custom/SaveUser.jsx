@@ -4,12 +4,15 @@ import { useEffect } from "react";
 const SyncUser = () => {
   useEffect(() => {
     const sync = async () => {
-      await fetch("/api/save-user");
-    };
-    sync();
-  }, []);
+      const email = localStorage.getItem("userEmail")
+      if (!email) return
 
-  return null;
-};
+      await fetch(`/api/save-user?email=${encodeURIComponent(email)}`)
+    }
+    sync()
+  }, [])
 
-export default SyncUser;
+  return null
+}
+
+export default SyncUser

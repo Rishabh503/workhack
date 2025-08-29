@@ -28,12 +28,12 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
             <UserProvider>
-       <ClerkProvider>
+       
         <SyncUser/>
          <Navbar/>
         {children}
         <Footer/>
-       </ClerkProvider>
+       
        </UserProvider>
 
       </body>

@@ -2,13 +2,10 @@
 
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 
 export const ProfileCard = () => {
-  const { user, isLoaded, isSignedIn } = useUser();
 
-  if (!isLoaded) return <div>Loading...</div>;
-  if (!isSignedIn) return <div>User not signed in</div>;
 
   return (
     <Card className="p-4 rounded-xl shadow-sm flex items-center gap-4">

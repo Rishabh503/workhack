@@ -15,29 +15,36 @@ import { DialogGoal } from "./DialogBasedGoal";
 import Link from "next/link";
 import { UpdateStatus } from "../../goal/__components/UpdateStatus";
 import UpdateSubject from "./SubjectUpdate";
+import { useUser } from "@/context/UserContext";
+// import { useUser } from "@clerk/clerk-react";
 
 const Display = () => {
+  const {userEmail}=useUser();
+  console.log(userEmail)
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const res = await fetch("/api/subjects/user", {
-          credentials: "include", // 
-        });
-        const data = await res.json();
-        console.log(data.student.subjects)
-        setSubjects(data.student.subjects || []);
-      } catch (err) {
-        console.error("Error fetching subjects:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+  if (!userEmail) return; // 🚫 Don’t call API until email is available
 
-    fetchSubjects();
-  }, []);
+  const fetchSubjects = async () => {
+    try {
+      const res = await fetch(`/api/subjects/user?email=${userEmail}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      console.log("ye data hai", data);
+      setSubjects(data.student.subjects || []);
+    } catch (err) {
+      console.error("Error fetching subjects:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSubjects();
+}, [userEmail]); // ✅ re-run only when email changes
+
 
   return (
     <div>

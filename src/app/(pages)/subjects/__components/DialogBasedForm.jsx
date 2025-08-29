@@ -12,41 +12,47 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUser } from "@/context/UserContext";
 import { useState } from "react";
 
 export function DialogDemo() {
+  const user=useUser()
+  console.log(user)
   const [subjectName, setSubjectName] = useState("");
   const [loading, setLoading] = useState(false);
   const [responseMsg, setResponseMsg] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setResponseMsg("");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setResponseMsg("");
 
-    try {
-      const res = await fetch("/api/subjects/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: subjectName }),
-      });
+  try {
+    const res = await fetch("/api/subjects/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        name: subjectName, 
+        email: user.userEmail   // ✅ pass user email
+      }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (res.ok) {
-        setResponseMsg(`✅ Subject "${data.subject.name}" added successfully!`);
-      } else {
-        setResponseMsg(`❌ ${data.error}`);
-      }
-    } catch (error) {
-      setResponseMsg("❌ Something went wrong. Try again.");
+    if (res.ok) {
+      setResponseMsg(`✅ Subject "${data.subject.name}" added successfully!`);
+    } else {
+      setResponseMsg(`❌ ${data.error}`);
     }
+  } catch (error) {
+    setResponseMsg("❌ Something went wrong. Try again.");
+  }
 
-    setLoading(false);
-    setSubjectName(""); // reset the input
-  };
+  setLoading(false);
+  setSubjectName(""); // reset the input
+};
 
   return (
     <Dialog>

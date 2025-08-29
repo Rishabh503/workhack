@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 //yaha db connection dena hai
 export async function connectDB() {
-    const  DBNAME="/WORKFLOW"
+    const  DBNAME="/WORKFLOW2"
     const name=process.env.MONGO_DB_URI+DBNAME
     try {
         mongoose.connect(name) 

@@ -1,32 +1,66 @@
 import { connectDB } from "@/lib/db"
-import Student from "@/models/studentModel";
-import { currentUser } from "@clerk/nextjs/server";
+import Student from "@/models/studentModel"
+import { supabase } from "@/lib/supabase"
+import Goal from "@/models/goalModel"   
+import Session from "@/models/sessionModel"
 
+export async function GET(req) {
+  try {
+    await connectDB()
 
-export async function GET() {
-    try {
-        await connectDB();
-        const clerkUser=await currentUser()
-         if (!clerkUser) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    // get email from URL params
+    const { searchParams } = new URL(req.url)
+    const email = searchParams.get("email")
+
+    if (!email) {
+      return new Response(
+        JSON.stringify({ error: "Email parameter required" }),
+        { status: 400 }
+      )
     }
-    const existingStudent=await Student.findOne({
-        clerkId:clerkUser.id
+
+    // fetch user from Supabase
+    const { data: supabaseUser, error: supabaseError } = await supabase
+      .from("students")
+      .select("*")
+      .eq("email", email)
+      .single()
+
+    if (supabaseError || !supabaseUser) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401 }
+      )
+    }
+
+    // check if student already exists in Mongo
+    let thisStudent = await Student.findOne({
+      supabaseId: supabaseUser.auth_id,
+      email,
     })
 
-    if(!existingStudent){
-        const newStudent=await Student.create({
-                 clerkId: clerkUser.id,
-        email: clerkUser.emailAddresses[0].emailAddress,
-        name: clerkUser.fullName,
-        })
+    // if not, create new student
+   if (!thisStudent) {
+  thisStudent = await Student.create({
+    supabaseId: supabaseUser.auth_id,
+    email,
+    name: supabaseUser.name || "Unknown",  // 👈 add this
+    subjects: [],
+    goals: [],
+    sessions: [],
+  })
+}
 
-        return Response.json({ student: newStudent, status: "created" });
-    }
-    // console.log(existingStudent)
-   return Response.json({ student: existingStudent, status: "existing" });
-    } catch (error) {
-        console.log(error)
-        console.error("error saving the user ",error)
-    }
+
+    return Response.json({
+      student: thisStudent,
+      status: thisStudent.isNew ? "created" : "existing",
+    })
+  } catch (error) {
+    console.error("Error while saving user:", error)
+    return new Response(
+      JSON.stringify({ error: "Internal Server Error" }),
+      { status: 500 }
+    )
+  }
 }
