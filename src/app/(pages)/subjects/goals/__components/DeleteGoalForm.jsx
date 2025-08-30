@@ -14,25 +14,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-// subject deadline title 
-export default function DeleteGoalForm({goal}) {
-
+// subject deadline title
+export default function DeleteGoalForm({ goal }) {
   const [loading, setLoading] = useState(false);
   const [responseMsg, setResponseMsg] = useState("");
-  console.log(goal,"goal from delete")
+  console.log(goal, "goal from delete");
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-   
+
     try {
       const res = await fetch(`/api/subjects/goals/create/${goal._id}`, {
-        method: "DELETE"
+        method: "DELETE",
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        setResponseMsg(`✅ Goal  updated successfully!`);
+        setResponseMsg("✅ Goal deleted successfully!");
       } else {
         setResponseMsg(`❌ ${data.error}`);
       }
@@ -45,9 +44,9 @@ export default function DeleteGoalForm({goal}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-         <Button className='bg-red-200 hover:bg-red-400 text-black mx-2 '>
-                    Delete
-          </Button>
+        <Button className="bg-red-200 hover:bg-red-400 text-black mx-2 ">
+          Delete
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
@@ -61,7 +60,11 @@ export default function DeleteGoalForm({goal}) {
                 Cancel
               </Button>
             </DialogClose>
-            <Button className='bg-red-600 hover:bg-red-800' type="submit" disabled={loading}>
+            <Button
+              className="bg-red-600 hover:bg-red-800"
+              type="submit"
+              disabled={loading}
+            >
               {loading ? "Deleting..." : "Delete"}
             </Button>
           </DialogFooter>

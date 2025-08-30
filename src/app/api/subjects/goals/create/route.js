@@ -116,3 +116,57 @@ export async function PATCH(req) {
     })
   }
 }
+
+export async function DELETE(req, { params }) {
+  try {
+    await connectDB();
+
+    // Extract goalId from URL (since you're calling /create/[goalId])
+    const goalId = params?.goalId || req.url.split("/").pop();
+
+    if (!goalId) {
+      return new Response(JSON.stringify({ error: "Missing goalId" }), {
+        status: 400,
+      });
+    }
+
+    // Find goal
+    const goal = await Goal.findById(goalId)
+      .populate("student")
+      .populate("subject");
+
+    if (!goal) {
+      return new Response(JSON.stringify({ error: "Goal not found" }), {
+        status: 404,
+      });
+    }
+
+    // Remove from subject.goals
+    if (goal.subject) {
+      await Subject.findByIdAndUpdate(goal.subject._id, {
+        $pull: { goals: goal._id },
+      });
+    }
+
+    // Remove from student.goals
+    if (goal.student) {
+      await Student.findByIdAndUpdate(goal.student._id, {
+        $pull: { goals: goal._id },
+      });
+    }
+
+    // Delete goal itself
+    await Goal.findByIdAndDelete(goalId);
+
+    return new Response(
+      JSON.stringify({ message: "Goal deleted successfully" }),
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error("Error while deleting goal:", error);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+    });
+  }
+}

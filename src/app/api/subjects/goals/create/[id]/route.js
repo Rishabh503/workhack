@@ -51,24 +51,8 @@ export async function DELETE(req, { params }) {
   await connectDB()
   
   const { id } = params
-  const { email } = await req.json()
 
   try {
-    // Verify user with Supabase
-    if (email) {
-      const { data: supabaseUser, error } = await supabase
-        .from('students')
-        .select('*')
-        .eq('email', email)
-        .single()
-
-      if (error || !supabaseUser) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-        })
-      }
-    }
-
     const deletedGoal = await Goal.findByIdAndDelete(id)
 
     if (!deletedGoal) {
@@ -77,13 +61,13 @@ export async function DELETE(req, { params }) {
       }), { status: 404 })
     }
 
-    // Remove from students
+    // Remove goal from student's goals
     await Student.updateOne(
       { _id: deletedGoal.student },
       { $pull: { goals: id } }
     )
 
-    // Remove from subjects
+    // Remove goal from subject's goals
     await Subject.updateOne(
       { _id: deletedGoal.subject },
       { $pull: { goals: id } }
@@ -92,7 +76,6 @@ export async function DELETE(req, { params }) {
     return new Response(JSON.stringify({ status: "deleted", id }), {
       status: 200,
     })
-
   } catch (error) {
     console.error("DELETE error:", error)
     return new Response(JSON.stringify({ error: "Failed to delete goal" }), {
