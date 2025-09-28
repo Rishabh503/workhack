@@ -155,6 +155,6 @@ Make sure each goal is specific, actionable, and realistic. Focus on creating a 
 
   } catch (error) {
     console.error("Error creating study plan:", error)
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 })
+    return new Response(JSON.stringify({ error: error + "Internal Server Error" }), { status: 500 })
   }
 }
